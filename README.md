@@ -1,1 +1,1 @@
-# Java_course_2023
+## This repo is for Java hometask.
