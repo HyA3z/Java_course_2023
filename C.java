@@ -4,6 +4,9 @@ import java.io.InputStreamReader;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        run();
+    }
+    public static void run() throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String pattern = reader.readLine();
         String string = reader.readLine();
@@ -18,16 +21,9 @@ public class Main {
         while (i < pattern.length()) {
             if (pattern.charAt(i) == pattern.charAt(len)) {
                 len++;
-                prefix[i] = len;
-                i++;
-            } else {
-                if (len != 0) {
-                    len = prefix[len - 1];
-                } else {
-                    prefix[i] = len;
-                    i++;
-                }
             }
+            prefix[i] = len;
+            i++;
         }
     }
 
@@ -45,14 +41,13 @@ public class Main {
             if (pattern.charAt(n1) == string.charAt(n2)) {
                 n1++;
                 n2++;
-            }
-
-            if (n1 == p) {
-                // Pattern found at index n2 - n1
-                result.append((n2 - n1)).append(" ");
-                // Update n1 using the prefix table
-                n1 = prefix[n1 - 1];
-            } else if (n2 < n && pattern.charAt(n1) != string.charAt(n2)) {
+                if (n1 == p) {
+                    // Pattern found at index n2 - n1
+                    result.append((n2 - n1)).append(" ");
+                    // Update n1 using the prefix table
+                    n1 = prefix[n1 - 1];
+                }
+            } else {
                 if (n1 != 0) {
                     n1 = prefix[n1 - 1];
                 } else {
