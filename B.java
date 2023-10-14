@@ -40,6 +40,11 @@ class BST {
 
 public class Main {
     public static void main(String[] args) {
+        Main main = new Main();
+        main.run();
+    }
+
+    public void run() {
         Scanner scan = new Scanner(System.in);
         BST tree = new BST();
         Node root = null;
