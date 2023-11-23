@@ -18,3 +18,8 @@ Manages available taxis and a queue of orders.
 Handles requests for taxis and notifies completion.
 ### 6. TestApi
 Main class to test the functionality of the taxi dispatcher system.
+
+## Running the Program
+```bash
+javac TestApi.java
+java TestApi
