@@ -1,4 +1,4 @@
-import java.util.Map;
+import java.util.*;
 
 public class ChessMoveHandler {
     public static boolean isValidMove(ChessPieceType type, ChessCoordinate from, ChessCoordinate to, ChessBoard board) {
