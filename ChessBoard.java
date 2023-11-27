@@ -6,7 +6,11 @@ public class ChessBoard {
     private final Map<ChessCoordinate, ChessPiece> board;
     private final Map<ChessCoordinate, ChessPieceType> specialCells;
     private ChessColor currentPlayer;
-    private final TreeSet<Integer> yCoordinates;
+    private final TreeMap<Integer, Boolean> yCoordinates;
+    private final Map<ChessColor, Map<ChessPieceType, Set<ChessCoordinate>>> pieceMap;
+    private final Set<Integer> occupiedRows;
+    private final Set<Integer> occupiedCols;
+    private final Set<Integer> occupiedDiagonals;
 
     public Map<ChessCoordinate, ChessPiece> getBoard() {
         return new HashMap<>(board);
@@ -16,12 +20,24 @@ public class ChessBoard {
         this.board = new HashMap<>();
         this.specialCells = new HashMap<>();
         this.currentPlayer = ChessColor.WHITE;
-        this.yCoordinates = new TreeSet<>();
+        this.yCoordinates = new TreeMap<>();
+        this.pieceMap = new HashMap<>();
+        this.occupiedRows = new HashSet<>();
+        this.occupiedCols = new HashSet<>();
+        this.occupiedDiagonals = new HashSet<>();
+
         specialCells.put(new ChessCoordinate(0, 0), ChessPieceType.MEGAPAWN);
+
+        for (ChessColor color : ChessColor.values()) {
+            pieceMap.put(color, new HashMap<>());
+            for (ChessPieceType type : ChessPieceType.values()) {
+                pieceMap.get(color).put(type, new HashSet<>());
+            }
+        }
     }
 
     public boolean hasPiecesInRow(int row) {
-        return yCoordinates.contains(row);
+        return yCoordinates.containsKey(row);
     }
 
     public void setStartingPlayer(ChessColor startingPlayer) {
@@ -30,7 +46,16 @@ public class ChessBoard {
 
     public void addChessPiece(ChessPiece piece, ChessCoordinate position) {
         board.put(position, piece);
-        yCoordinates.add(position.get_Y());
+        yCoordinates.put(position.get_Y(), true);
+        pieceMap.get(piece.getColor()).get(piece.getType()).add(position);
+
+        int x = position.get_X();
+        int y = position.get_Y();
+
+        occupiedRows.add(x);
+        occupiedCols.add(y);
+        occupiedDiagonals.add(x - y);
+        occupiedDiagonals.add(x + y);
     }
 
     public ChessPiece getChessPieceAt(ChessCoordinate position) {
@@ -38,8 +63,17 @@ public class ChessBoard {
     }
 
     public void removeChessPiece(ChessCoordinate position) {
-        board.remove(position);
+        ChessPiece removedPiece = board.remove(position);
         yCoordinates.remove(position.get_Y());
+        if (removedPiece != null) {
+            pieceMap.get(removedPiece.getColor()).get(removedPiece.getType()).remove(position);
+        }
+        int x = position.get_X();
+        int y = position.get_Y();
+        occupiedRows.remove(x);
+        occupiedCols.remove(y);
+        occupiedDiagonals.remove(x - y);
+        occupiedDiagonals.remove(x + y);
     }
 
     public ChessColor getCurrentPlayer() {
@@ -89,4 +123,36 @@ public class ChessBoard {
     public Map<ChessCoordinate, ChessPieceType> getSpecialCells() {
         return specialCells;
     }
+
+    public Map<ChessColor, Map<ChessPieceType, Set<ChessCoordinate>>> getPieceMap() {
+        return pieceMap;
+    }
+
+    boolean isPathClearHorizontal(ChessCoordinate from, ChessCoordinate to) {
+        int y = from.get_Y();
+
+        if (occupiedRows.contains(from.get_X()) || occupiedRows.contains(to.get_X())) {
+            return false; // If either the starting or ending row is occupied, the path is not clear.
+        }
+
+        return !occupiedCols.contains(y); // Check if the entire column is clear.
+    }
+
+    boolean isPathClearVertical(ChessCoordinate from, ChessCoordinate to) {
+        int x = from.get_X();
+
+        if (occupiedCols.contains(from.get_Y()) || occupiedCols.contains(to.get_Y())) {
+            return false; // If either the starting or ending column is occupied, the path is not clear.
+        }
+
+        return !occupiedRows.contains(x); // Check if the entire row is clear.
+    }
+
+    boolean isPathClearDiagonal(ChessCoordinate from, ChessCoordinate to) {
+        int diagonalIndexFrom = from.get_X() - from.get_Y();
+        int diagonalIndexTo = to.get_X() - to.get_Y();
+
+        return !occupiedDiagonals.contains(diagonalIndexFrom) && !occupiedDiagonals.contains(diagonalIndexTo);
+    }
+
 }
