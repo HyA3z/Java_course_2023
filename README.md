@@ -4,7 +4,7 @@ This is a sample Spring Boot application for analyzing transactions. The applica
 The result will display in Website http://localhost:8080/financial/Analysis
 
 ## Project Structure
-'''
+```
 spring-transaction-analysis/
 │
 ├── src/
@@ -23,7 +23,7 @@ spring-transaction-analysis/
 │   └── test/
 │       └── java
 └── pom.xml
-'''
+```
 
 
 ## How to use
