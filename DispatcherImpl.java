@@ -41,7 +41,13 @@ class DispatcherImpl implements Dispatcher {
             Taxi availableTaxi = availableTaxis.poll();
             String queuedOrder = orderQueue.poll();
             System.out.println("Dispatcher requested " + availableTaxi.toString() + " for an order.");
-            availableTaxi.placeOrder(new Passenger(queuedOrder.split("'s")[0]), queuedOrder.split("to ")[1]);
+
+            String[] orderParts = queuedOrder.split("to ");
+            if (orderParts.length == 2) {
+                availableTaxi.placeOrder(new Passenger(orderParts[0]), orderParts[1]);
+            } else {
+                System.out.println("Invalid order format: " + queuedOrder);
+            }
         }
     }
 }
