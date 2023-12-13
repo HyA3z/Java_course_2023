@@ -1,6 +1,0 @@
-transactionId,date,amount,description,userId
-1,2023-12-01,150.0,Payment for groceries,201665
-2,2023-12-02,55.8,Restaurant bill,438972
-3,2023-12-03,300.0,Monthly rent,438972
-4,2023-12-04,45.0,Transportation fee,581324
-5,2023-12-05,500.0,Salary deposit,970661
