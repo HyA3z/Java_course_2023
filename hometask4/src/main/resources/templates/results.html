@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://analysis.com/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Platform Results</title>
+</head>
+<body>
+
+<h1>All Transactions</h1>
+<ul>
+    <li th:each="transaction : ${allTransactions}" th:text="${transaction.toString()}"></li>
+</ul>
+
+<h1>Filtered Transactions</h1>
+<ul>
+    <li th:each="entry : ${filteredTransactions.entrySet()}" th:text="${entry.key} + ': ' + ${entry.value}"></li>
+</ul>
+
+<h1>Grouped Transactions</h1>
+<ul>
+    <li th:each="entry : ${groupedTransactions.entrySet()}" th:text="${entry.key} + ': ' + ${entry.value}"></li>
+</ul>
+
+<h1>Average Transaction Amount</h1>
+<ul>
+    <li th:each="type : ${allTransactionTypes}">
+        <span th:text="${type}"></span>: <span th:text="${averageAmounts[type]}"></span>
+    </li>
+</ul>
+
+<h1>Unique Users Count</h1>
+<ul>
+    <li th:each="entry : ${uniqueUsersCount.entrySet()}">
+        <span th:text="${entry.key}"></span>: <span th:text="${entry.value}"></span>
+    </li>
+</ul>
+
+</body>
+</html>
+
+</body>
+</html>
