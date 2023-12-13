@@ -1,13 +1,13 @@
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 class DispatcherImpl implements Dispatcher {
-    private final Queue<Taxi> availableTaxis;
-    private final Queue<String> orderQueue;
+    private final BlockingQueue<Taxi> availableTaxis;
+    private final BlockingQueue<String> orderQueue;
 
     public DispatcherImpl() {
-        this.availableTaxis = new LinkedList<>();
-        this.orderQueue = new LinkedList<>();
+        this.availableTaxis = new LinkedBlockingQueue<>();
+        this.orderQueue = new LinkedBlockingQueue<>();
     }
 
     @Override
